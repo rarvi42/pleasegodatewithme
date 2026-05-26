@@ -15,9 +15,9 @@ const noMessages = [
   "Pookie please... 🥺",
   "But I already planned everything...",
   "I'll be really sad 😢",
-  "PLEASE??? 💔",
   "Don't do this to me...",
   "Last chance 😭",
+  "PLEASE??? 💔",
   "You can't catch me anyway 😜"
 ]
 
