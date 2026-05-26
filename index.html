@@ -1,70 +1,60 @@
-<!DOCTYPE html>
-<html>
+let yesBtn = document.getElementById("yes-btn");
+let noBtn = document.getElementById("no-btn");
+let gif = document.getElementById("cat-gif");
+let toast = document.getElementById("tease-toast");
 
-<head>
-<title>Please Go Date With Me ❤️</title>
+let yesSize = 20;
+let noSize = 20;
 
-<style>
+const messages = [
+    "Please 🥺",
+    "Think again 😭",
+    "Are you sure? 💔",
+    "Don't do this 😭",
+    "Come on 😭❤️",
+    "You know you want to 😏"
+];
 
-body{
-    background:#ffd6e7;
-    font-family:Arial;
-    text-align:center;
-    margin-top:100px;
-}
+let count = 0;
 
-h1{
-    font-size:50px;
-}
+function handleNoClick(){
 
-button{
-    padding:15px 25px;
-    font-size:20px;
-    margin:20px;
-    border-radius:20px;
-    cursor:pointer;
-}
+    yesSize += 10;
+    noSize -= 2;
 
-</style>
+    yesBtn.style.fontSize = yesSize + "px";
+    noBtn.style.fontSize = noSize + "px";
 
-</head>
+    toast.innerText = messages[count % messages.length];
 
-<body>
+    count++;
 
-<h1>Will you go on a date with me? ❤️</h1>
+    gif.src="https://media.tenor.com/3G0Q9V7S9wQAAAAi/peach-goma.gif";
 
-<button id="yesBtn" onclick="yes()">Yes 😊</button>
+    if(noSize <= 8){
+        noBtn.style.display="none";
 
-<button id="noBtn" onclick="noClick()">No 😢</button>
-
-<script>
-
-let yesSize=20;
-let noSize=20;
-
-function yes(){
-    alert("Yayyyyy ❤️");
-}
-
-function noClick(){
-
-    yesSize +=10;
-    noSize -=2;
-
-    document.getElementById("yesBtn").style.fontSize=
-    yesSize+"px";
-
-    document.getElementById("noBtn").style.fontSize=
-    noSize+"px";
-
-    if(noSize<=8){
-        document.getElementById("noBtn").style.display="none";
+        toast.innerText="No button has given up 😭";
     }
 
 }
 
-</script>
+function handleYesClick(){
 
-</body>
+    gif.src="https://media.tenor.com/W6LWPtj6QKIAAAAi/cute-love.gif";
 
-</html>
+    toast.innerText="Yayyyyy ❤️";
+}
+
+function toggleMusic(){
+
+    let music=document.getElementById("bg-music");
+
+    if(music.paused){
+        music.play();
+    }
+    else{
+        music.pause();
+    }
+
+}
