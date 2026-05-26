@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will you go on a date with me? 💕</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      background-color: #FFE4E8;
+      background-image:
+        radial-gradient(circle at 15% 85%, #ffb3c1 0%, transparent 40%),
+        radial-gradient(circle at 85% 15%, #ff8fa3 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, #fff0f3 0%, transparent 60%);
+    }
+    .hearts-bg { position: fixed; top:0;left:0;right:0;bottom:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .heart-particle { position:absolute; font-size:1.4rem; opacity:0; animation:floatUp linear infinite; bottom:-40px; }
+    @keyframes floatUp {
+      0%   { opacity:0; transform:translateY(0) scale(0.7) rotate(0deg); }
+      15%  { opacity:0.6; }
+      85%  { opacity:0.3; }
+      100% { opacity:0; transform:translateY(-110vh) scale(1.1) rotate(20deg); }
+    }
+    .container { position:relative; z-index:1; text-align:center; padding:40px 24px; max-width:480px; width:100%; }
+    h1 { font-size:clamp(1.6rem,5vw,2.4rem); color:#d63384; font-weight:900; margin-bottom:8px; text-shadow:2px 2px 0px rgba(214,51,132,0.2); animation:wiggle 2.5s ease-in-out infinite; }
+    @keyframes wiggle { 0%,100%{transform:rotate(-1deg)} 50%{transform:rotate(1deg)} }
+    .subtitle { font-size:1rem; color:#e91e8c; font-weight:700; margin-bottom:16px; min-height:1.4em; transition:opacity 0.3s; }
+    .gif-container { margin:12px auto; display:flex; justify-content:center; }
+    #cat-gif { width:190px; height:190px; object-fit:contain; filter:drop-shadow(0 8px 16px rgba(0,0,0,0.15)); transition:opacity 0.3s ease; border-radius:14px; }
+
+    /* Date display box */
+    .date-display-wrap {
+      background: rgba(255,255,255,0.78);
+      border: 1.5px solid #ffb3c1;
+      border-radius: 16px;
+      padding: 14px 28px;
+      margin: 14px auto;
+      display: inline-block;
+      backdrop-filter: blur(6px);
+    }
+    .date-display-wrap .date-label { font-size:0.85rem; font-weight:800; color:#d63384; margin-bottom:4px; }
+    .date-display-wrap .date-value { font-size:1.35rem; font-weight:900; color:#d63384; }
+
+    .buttons { display:flex; gap:18px; justify-content:center; align-items:center; margin-top:18px; flex-wrap:wrap; }
+    #yes-btn { background:linear-gradient(135deg,#ff6b9d,#d63384); color:white; border:none; border-radius:16px; font-size:1.5rem; font-weight:900; font-family:'Nunito',sans-serif; padding:16px 44px; cursor:pointer; box-shadow:0 6px 20px rgba(214,51,132,0.4); transition:transform 0.15s,box-shadow 0.15s; letter-spacing:0.5px; }
+    #yes-btn:hover { transform:scale(1.07) translateY(-2px); box-shadow:0 10px 28px rgba(214,51,132,0.5); }
+    #yes-btn:active { transform:scale(0.97); }
+    #no-btn { background:linear-gradient(135deg,#e74c3c,#c0392b); color:white; border:none; border-radius:12px; font-size:1rem; font-weight:700; font-family:'Nunito',sans-serif; padding:12px 28px; cursor:pointer; transition:background 0.2s,left 0.25s ease,top 0.25s ease; box-shadow:0 4px 14px rgba(231,76,60,0.4); }
+    #no-btn:hover { background:linear-gradient(135deg,#c0392b,#a93226); }
+    #tease-toast { margin-top:14px; font-size:1rem; color:#d63384; font-weight:800; font-style:italic; opacity:0; transform:translateY(6px); transition:opacity 0.3s ease,transform 0.3s ease; min-height:1.5rem; }
+    #tease-toast.show { opacity:1; transform:translateY(0); }
+    #music-toggle { position:fixed; bottom:20px; right:20px; background:rgba(255,255,255,0.88); border:none; border-radius:50%; width:52px; height:52px; font-size:1.4rem; cursor:pointer; backdrop-filter:blur(10px); box-shadow:0 4px 12px rgba(0,0,0,0.12); transition:transform 0.2s; z-index:100; }
+    #music-toggle:hover { transform:scale(1.1); }
+
+    /* Success page */
+    #success-page { display:none; position:relative; z-index:1; text-align:center; padding:40px 24px; max-width:480px; width:100%; animation:popIn 0.6s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes popIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
+    #success-page h1 { font-size:clamp(1.8rem,5vw,2.6rem); animation:bounceTitle 0.7s ease infinite alternate; }
+    @keyframes bounceTitle { from{transform:translateY(0) rotate(-1deg)} to{transform:translateY(-10px) rotate(1deg)} }
+    .yes-message { font-size:1.3rem; color:#e91e8c; font-weight:700; margin-top:18px; }
+    .date-badge { display:inline-block; background:rgba(255,255,255,0.85); border:2px solid #ffb3c1; border-radius:16px; padding:14px 32px; font-size:1.25rem; font-weight:900; color:#d63384; margin-top:16px; backdrop-filter:blur(6px); box-shadow:0 4px 16px rgba(214,51,132,0.2); }
+    .cant-wait { font-size:1rem; color:#e91e8c; font-weight:700; margin-top:10px; opacity:0.85; }
+  </style>
+</head>
+<body>
+
+  <div class="hearts-bg" id="hearts-bg"></div>
+
+  <!-- MAIN PAGE -->
+  <div class="container" id="main-page">
+    <h1>Will you go on a date with me? 💕</h1>
+    <p class="subtitle" id="subtitle">I already have the perfect day planned... 🌸</p>
+
+    <div class="gif-container">
+      <img id="cat-gif" src="https://media.tenor.com/EBV7OT7ACfwAAAAj/u-u-qua-qua-u-quaa.gif" alt="cute character">
+    </div>
+
+    <div class="date-display-wrap">
+      <div class="date-label">📅 Our date</div>
+      <div class="date-value">Saturday, 30th May 2026 💗</div>
+    </div>
+
+    <div class="buttons">
+      <button id="yes-btn" onclick="handleYes()">Yes!! 🥰</button>
+      <button id="no-btn" onclick="handleNo()">No</button>
+    </div>
+
+    <div id="tease-toast"></div>
+  </div>
+
+  <!-- SUCCESS PAGE -->
+  <div id="success-page">
+    <h1>Knew you'd say yes! 🎉</h1>
+    <div class="gif-container">
+      <img src="https://media.tenor.com/eNHbizSfVb0AAAAj/lovemode-cute.gif" alt="celebrating" style="width:200px;height:200px;border-radius:14px;object-fit:contain;">
+    </div>
+    <p class="yes-message">You just made me the happiest person! 💕</p>
+    <div class="date-badge">📅 Saturday, 30th May 2026</div>
+    <p class="cant-wait">Can't wait for our date! 🌸</p>
+  </div>
+
+  <audio id="bg-music" loop autoplay muted>
+    <source src="music/song.mp3" type="audio/mpeg">
+  </audio>
+  <button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔊</button>
+
+<script>
+const gifStages = [
+  "https://media.tenor.com/EBV7OT7ACfwAAAAj/u-u-qua-qua-u-quaa.gif",
+  "https://media1.tenor.com/m/uDugCXK4vI4AAAAd/chiikawa-hachiware.gif",
+  "https://media.tenor.com/f_rkpJbH1s8AAAAj/somsom1012.gif",
+  "https://media.tenor.com/OGY9zdREsVAAAAAj/somsom1012.gif",
+  "https://media1.tenor.com/m/WGfra-Y_Ke0AAAAd/chiikawa-sad.gif",
+  "https://media.tenor.com/CivArbX7NzQAAAAj/somsom1012.gif",
+  "https://media.tenor.com/5_tv1HquZlcAAAAj/chiikawa.gif",
+  "https://media1.tenor.com/m/uDugCXK4vI4AAAAC/chiikawa-hachiware.gif"
+]
+const noMessages = [
+  "No","Are you positive? 🤔","Pookie please... 🥺","But I already planned everything...",
+  "I'll be really sad 😢","PLEASE??? 💔","Don't do this to me...","Last chance 😭","You can't catch me anyway 😜"
+]
+const subtitles = [
+  "C'mon... 🥺","Really?? 😟","It'll be so fun... 😢",
+  "Please just say yes 💔","I'm begging you 😭","LAST CHANCE!! 😤"
+]
+const teasePokes = [
+  "Try saying no first... just once 😏","Go on, hit no... I dare you 👀",
+  "You're missing out 😈","Click no, I bet you won't 😏"
+]
+
+let noClickCount = 0, yesTeasedCount = 0, runawayEnabled = false, musicPlaying = true
+const catGif = document.getElementById('cat-gif')
+const yesBtn = document.getElementById('yes-btn')
+const noBtn  = document.getElementById('no-btn')
+const music  = document.getElementById('bg-music')
+
+// Floating hearts
+const heartEmojis = ['💕','💗','💖','💝','💓','🌸','✨','💘']
+const heartsBg = document.getElementById('hearts-bg')
+for (let i = 0; i < 14; i++) {
+  const h = document.createElement('span')
+  h.className = 'heart-particle'
+  h.textContent = heartEmojis[i % heartEmojis.length]
+  h.style.left = (Math.random() * 92 + 4) + '%'
+  h.style.animationDuration = (3 + Math.random() * 4) + 's'
+  h.style.animationDelay = (Math.random() * 5) + 's'
+  h.style.fontSize = (0.8 + Math.random() * 0.9) + 'rem'
+  heartsBg.appendChild(h)
+}
+
+// Music
+music.muted = true
+music.volume = 0.3
+music.play().then(() => { music.muted = false }).catch(() => {
+  document.addEventListener('click', () => { music.muted = false; music.play().catch(()=>{}) }, { once: true })
+})
+
+function toggleMusic() {
+  if (musicPlaying) { music.pause(); musicPlaying = false; document.getElementById('music-toggle').textContent = '🔇' }
+  else { music.muted = false; music.play(); musicPlaying = true; document.getElementById('music-toggle').textContent = '🔊' }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('tease-toast')
+  t.textContent = msg; t.classList.add('show')
+  clearTimeout(t._timer); t._timer = setTimeout(() => t.classList.remove('show'), 2800)
+}
+
+function handleYes() {
+  if (!runawayEnabled) {
+    showToast(teasePokes[Math.min(yesTeasedCount, teasePokes.length - 1)])
+    yesTeasedCount++; return
+  }
+  if (typeof confetti === 'function') {
+    confetti({ particleCount:150, spread:100, origin:{x:0.5,y:0.4}, colors:['#ff69b4','#ff1493','#ffb3c1','#fff','#ff85a2','#d63384','#ffdf00'] })
+    setTimeout(() => {
+      confetti({ particleCount:60, angle:60,  spread:55, origin:{x:0,y:0.6}, colors:['#ff69b4','#ffb3c1','#d63384'] })
+      confetti({ particleCount:60, angle:120, spread:55, origin:{x:1,y:0.6}, colors:['#ff69b4','#ffb3c1','#d63384'] })
+    }, 300)
+  }
+  setTimeout(() => {
+    document.getElementById('main-page').style.display = 'none'
+    document.getElementById('success-page').style.display = 'block'
+    if (typeof confetti === 'function') {
+      const end = Date.now() + 4000
+      const b = setInterval(() => {
+        if (Date.now() > end) { clearInterval(b); return }
+        confetti({ particleCount:30, angle:60,  spread:50, origin:{x:0,  y:0.65}, colors:['#ff69b4','#ffb3c1','#fff','#ffdf00','#d63384'] })
+        confetti({ particleCount:30, angle:120, spread:50, origin:{x:1,  y:0.65}, colors:['#ff69b4','#ffb3c1','#fff','#ffdf00','#d63384'] })
+      }, 350)
+    }
+  }, 700)
+}
+
+function handleNo() {
+  noClickCount++
+  noBtn.textContent = noMessages[Math.min(noClickCount, noMessages.length - 1)]
+  const ySize = parseFloat(window.getComputedStyle(yesBtn).fontSize)
+  yesBtn.style.fontSize = (ySize * 1.3) + 'px'
+  yesBtn.style.padding = `${Math.min(16+noClickCount*4,55)}px ${Math.min(44+noClickCount*9,115)}px`
+  if (noClickCount >= 2) {
+    const nSize = parseFloat(window.getComputedStyle(noBtn).fontSize)
+    noBtn.style.fontSize = Math.max(nSize * 0.86, 10) + 'px'
+  }
+  catGif.style.opacity = '0'
+  setTimeout(() => { catGif.src = gifStages[Math.min(noClickCount, gifStages.length-1)]; catGif.style.opacity = '1' }, 200)
+  document.getElementById('subtitle').textContent = subtitles[Math.min(noClickCount-1, subtitles.length-1)]
+  if (noClickCount >= 4 && !runawayEnabled) {
+    noBtn.addEventListener('mouseover', runAway)
+    noBtn.addEventListener('touchstart', runAway, { passive:true })
+    runawayEnabled = true
+  }
+}
+
+function runAway() {
+  const m=20, w=noBtn.offsetWidth, h=noBtn.offsetHeight
+  noBtn.style.position = 'fixed'
+  noBtn.style.left = (Math.random()*(window.innerWidth-w-m)+m/2) + 'px'
+  noBtn.style.top  = (Math.random()*(window.innerHeight-h-m)+m/2) + 'px'
+  noBtn.style.zIndex = '50'
+}
+</script>
+</body>
+</html>
