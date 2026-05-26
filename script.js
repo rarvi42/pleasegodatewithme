@@ -120,7 +120,7 @@ function handleNo() {
 
   const ySize = parseFloat(window.getComputedStyle(yesBtn).fontSize)
   yesBtn.style.fontSize = (ySize * 1.3) + 'px'
-  yesBtn.style.padding = `${Math.min(16 + noClickCount * 4, 55)}px ${Math.min(44 + noClickCount * 9, 115)}px`
+  yesBtn.style.padding = `${Math.min(16 + noClickCount * 2, 30)}px ${Math.min(44 + noClickCount * 4, 70)}px`
 
   if (noClickCount >= 2) {
     const nSize = parseFloat(window.getComputedStyle(noBtn).fontSize)
