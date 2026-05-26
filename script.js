@@ -135,7 +135,7 @@ function handleNo() {
 
   document.getElementById('subtitle').textContent = subtitles[Math.min(noClickCount - 1, subtitles.length - 1)]
 
-  if (noClickCount >= 4 && !runawayEnabled) {
+  if (noClickCount >= 8 && !runawayEnabled) {
     noBtn.addEventListener('mouseover', runAway)
     noBtn.addEventListener('touchstart', runAway, { passive: true })
     runawayEnabled = true
