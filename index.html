@@ -1,27 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Please Go Date With Me ❤️</title>
+
+<style>
+
+body{
+    background:#ffd6e7;
+    font-family:Arial;
+    text-align:center;
+    margin-top:100px;
+}
+
+h1{
+    font-size:50px;
+}
+
+button{
+    padding:15px 25px;
+    font-size:20px;
+    margin:20px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Will you go on a date with me? ❤️</h1>
+
+<button id="yesBtn" onclick="yes()">Yes 😊</button>
+
+<button id="noBtn" onclick="noClick()">No 😢</button>
+
 <script>
 
-let yesSize = 20;
-let noSize = 20;
+let yesSize=20;
+let noSize=20;
 
 function yes(){
     alert("Yayyyyy ❤️");
 }
 
-document.getElementById("no").addEventListener("click", function(){
+function noClick(){
 
-    yesSize += 10;
-    noSize -= 2;
+    yesSize +=10;
+    noSize -=2;
 
-    document.querySelector("button").style.fontSize =
-        yesSize + "px";
+    document.getElementById("yesBtn").style.fontSize=
+    yesSize+"px";
 
-    document.getElementById("no").style.fontSize =
-        noSize + "px";
+    document.getElementById("noBtn").style.fontSize=
+    noSize+"px";
 
-    if(noSize < 8){
-        document.getElementById("no").style.display = "none";
+    if(noSize<=8){
+        document.getElementById("noBtn").style.display="none";
     }
 
-});
+}
 
 </script>
+
+</body>
+
+</html>
