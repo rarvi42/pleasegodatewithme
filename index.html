@@ -1,62 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Please Go Date With Me ❤️</title>
-
-<style>
-
-body{
-background:#ffd6e7;
-font-family:Arial;
-text-align:center;
-margin-top:100px;
-}
-
-h1{
-font-size:50px;
-}
-
-button{
-padding:15px 25px;
-font-size:20px;
-margin:20px;
-border-radius:20px;
-cursor:pointer;
-}
-
-#no{
-position:absolute;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<h1>Will you go on a date with me? ❤️</h1>
-
-<button onclick="yes()">Yes 😊</button>
-
-<button id="no" onmouseover="moveButton()">No 😢</button>
-
 <script>
 
+let yesSize = 20;
+let noSize = 20;
+
 function yes(){
-alert("Yayyyyy ❤️");
+    alert("Yayyyyy ❤️");
 }
 
-function moveButton(){
+document.getElementById("no").addEventListener("click", function(){
 
-let x=Math.random()*500;
-let y=Math.random()*500;
+    yesSize += 10;
+    noSize -= 2;
 
-document.getElementById("no").style.left=x+"px";
-document.getElementById("no").style.top=y+"px";
+    document.querySelector("button").style.fontSize =
+        yesSize + "px";
 
-}
+    document.getElementById("no").style.fontSize =
+        noSize + "px";
+
+    if(noSize < 8){
+        document.getElementById("no").style.display = "none";
+    }
+
+});
 
 </script>
-
-</body>
-</html>
