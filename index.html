@@ -1,37 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>My Website</title>
+<title>Please Go Date With Me ❤️</title>
 
 <style>
+
 body{
-    text-align:center;
-    font-family:Arial;
-    margin-top:100px;
-    background:#ffe6f0;
+background:#ffd6e7;
+font-family:Arial;
+text-align:center;
+margin-top:100px;
+}
+
+h1{
+font-size:50px;
 }
 
 button{
-    padding:15px;
-    font-size:18px;
+padding:15px 25px;
+font-size:20px;
+margin:20px;
+border-radius:20px;
+cursor:pointer;
 }
+
+#no{
+position:absolute;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h1>Hi 😊</h1>
-<p>This is my first website</p>
+<h1>Will you go on a date with me? ❤️</h1>
 
-<button onclick="showMessage()">
-Click Me
-</button>
+<button onclick="yes()">Yes 😊</button>
+
+<button id="no" onmouseover="moveButton()">No 😢</button>
 
 <script>
-function showMessage(){
-    alert("You clicked the button!");
+
+function yes(){
+alert("Yayyyyy ❤️");
 }
+
+function moveButton(){
+
+let x=Math.random()*500;
+let y=Math.random()*500;
+
+document.getElementById("no").style.left=x+"px";
+document.getElementById("no").style.top=y+"px";
+
+}
+
 </script>
 
 </body>
